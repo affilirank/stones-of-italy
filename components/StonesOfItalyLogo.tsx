@@ -7,7 +7,7 @@ export default function StonesOfItalyLogo({ size = 52, className = '' }: { size?
 
   return (
     <div
-      className={`relative flex-shrink-0 rounded-full overflow-hidden border-2 border-gold/60 bg-obsidian/40 shadow-lg shadow-gold/10 flex items-center justify-center ${className}`}
+      className={`relative flex-shrink-0 rounded-full overflow-hidden border-2 border-gold/60 bg-[#e7dfd0] shadow-lg shadow-gold/10 flex items-center justify-center ${className}`}
       style={{ width: size, height: size }}
       aria-label="Stones of Italy, Inc. logo"
     >
@@ -18,7 +18,7 @@ export default function StonesOfItalyLogo({ size = 52, className = '' }: { size?
           alt="Stones of Italy, Inc."
           width={size}
           height={size}
-          className="h-full w-full scale-[1.35] object-cover block"
+          className="h-[88%] w-[88%] object-contain block"
           onError={() => setErrored(true)}
         />
       ) : (
