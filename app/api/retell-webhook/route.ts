@@ -17,9 +17,17 @@ export async function POST(req: NextRequest) {
     const summary = analysis?.call_summary || payload?.call_summary || '';
     const sentiment = analysis?.user_sentiment || payload?.user_sentiment || '';
     const appointmentBooked = !!(analysis?.appointment_booked ?? analysis?.custom_analysis_data?.appointment_booked ?? payload?.appointment_booked);
+    const cabinetsInstalled = !!(analysis?.cabinets_installed ?? analysis?.custom_analysis_data?.cabinets_installed ?? payload?.cabinets_installed);
+    const selectedStoneInterest =
+      analysis?.selected_stone_interest ||
+      analysis?.custom_analysis_data?.selected_stone_interest ||
+      payload?.selected_stone_interest ||
+      '';
 
     const tags: string[] = ['call-connected'];
     if (appointmentBooked) tags.push('appointment-booked');
+    if (cabinetsInstalled) tags.push('cabinets-installed');
+    if (selectedStoneInterest) tags.push('selected-stone-interest');
     if (status === 'no-answer' || status === 'voicemail' || /voicemail/i.test(summary)) tags.push('voicemail-left');
 
     const contactId = metadata?.ghlContactId || metadata?.ghl_contact_id;
@@ -28,6 +36,8 @@ export async function POST(req: NextRequest) {
       callId ? `Call ID: ${callId}` : null,
       sentiment ? `Sentiment: ${sentiment}` : null,
       appointmentBooked ? 'Appointment booked: yes' : 'Appointment booked: no/unknown',
+      cabinetsInstalled ? 'Cabinets installed: yes' : 'Cabinets installed: no/unknown',
+      selectedStoneInterest ? `Selected stone interest: ${selectedStoneInterest}` : null,
       summary ? `Summary: ${summary}` : null,
       transcript ? `Transcript (truncated): ${String(transcript).slice(0, 3500)}` : null,
     ].filter(Boolean).join('\n');
@@ -41,7 +51,7 @@ export async function POST(req: NextRequest) {
     await triggerGhlWebhook({
       event: 'retell.call_synced',
       retellEvent: event,
-      callId, status, summary, sentiment, appointmentBooked, tags, contactId, metadata,
+      callId, status, summary, sentiment, appointmentBooked, cabinetsInstalled, selectedStoneInterest, tags, contactId, metadata,
       triggerSmsConfirmation: appointmentBooked,
     });
 
@@ -51,7 +61,7 @@ export async function POST(req: NextRequest) {
       try {
         await supabase.from('leads').update({
           voice_call_status: appointmentBooked ? 'appointment_booked' : (tags.includes('voicemail-left') ? 'voicemail_left' : 'call_connected'),
-          voice_call_result: { event, callId, status, summary, sentiment, appointmentBooked, transcript: String(transcript).slice(0, 8000) },
+          voice_call_result: { event, callId, status, summary, sentiment, appointmentBooked, cabinetsInstalled, selectedStoneInterest, transcript: String(transcript).slice(0, 8000) },
         }).eq('payload->>retellCallId', callId);
       } catch (e) { /* best effort */ }
     }

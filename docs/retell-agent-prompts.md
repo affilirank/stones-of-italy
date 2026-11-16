@@ -8,6 +8,15 @@ Profile: Family-owned since 2001, 4.7★ Google rated, serving Vero Beach & Trea
 
 > Use these as system prompts / agent instructions in Retell. Map dynamic variables from `/api/lead-capture` (`retell_llm_dynamic_variables`).
 
+## Live Retell Agent IDs
+
+| Agent | ID | Purpose |
+|---|---|---|
+| `RETELL_OUTBOUND_AGENT_ID` | `agent_fcb2b96cc604fc946c3fce6b25` | Stones of Italy – Outbound Speed-to-Lead (triggered by `/api/lead-capture`) |
+| `RETELL_INBOUND_AGENT_ID` | `agent_6444f3ed0ff36c841eb571d5e5` | Stones of Italy – Inbound Receptionist (24/7 call answering) |
+
+These IDs are also wired as code defaults: `POST /api/lead-capture` uses `process.env.RETELL_OUTBOUND_AGENT_ID || "agent_fcb2b96cc604fc946c3fce6b25"` when calling `https://api.retellai.com/v2/create-phone-call`.
+
 ---
 
 ## Agent 1 — Instant Outbound Speed-to-Lead Closer

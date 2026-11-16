@@ -16,7 +16,7 @@ function slugify(s: string) {
 
 async function triggerRetellOutbound(lead: any) {
   const apiKey = process.env.RETELL_API_KEY;
-  const agentId = process.env.RETELL_OUTBOUND_AGENT_ID;
+  const agentId = process.env.RETELL_OUTBOUND_AGENT_ID || 'agent_fcb2b96cc604fc946c3fce6b25';
   const from = process.env.RETELL_FROM_NUMBER;
   if (!apiKey || !agentId || !from) return { skipped: true, reason: 'Retell env vars missing' };
   const res = await fetch('https://api.retellai.com/v2/create-phone-call', {
