@@ -7,7 +7,7 @@ export default function StonesOfItalyLogo({ size = 52, className = '' }: { size?
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/stones-logo.jpg"
+        src="/stones-logo.png"
         alt="Stones of Italy, Inc."
         width={size}
         height={size}
