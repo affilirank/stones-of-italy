@@ -9,9 +9,9 @@ export default function Home() {
   return (
     <main className="pb-20 md:pb-0">
       <header className="sticky top-0 z-50 glass-panel-dark border-b border-gold/20 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-28 flex items-center justify-between">
           <a href="#" className="flex items-center gap-4 group">
-            <StonesOfItalyLogo size={52} />
+            <StonesOfItalyLogo size={76} />
             <div className="hidden sm:block">
               <span className="block font-serif text-xl font-bold tracking-wider text-alabaster uppercase leading-tight group-hover:text-gold transition-colors">Stones of Italy</span>
               <span className="block font-sans text-xs tracking-widest text-gold uppercase">Vero Beach • Master Stone Crafters</span>
@@ -180,7 +180,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             <div>
               <div className="flex items-center gap-4 mb-4">
-                <StonesOfItalyLogo size={112} />
+                <StonesOfItalyLogo size={140} />
               </div>
               <p className="text-xs text-alabaster/60 leading-relaxed mb-4">Premier natural stone fabricators &amp; certified porcelain installers serving Vero Beach, Sebastian, and the entire Treasure Coast since 2001.</p>
               <div className="text-xs text-gold">Licensed &amp; Insured #CBC1264821</div>
