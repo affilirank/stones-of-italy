@@ -19,7 +19,7 @@ if (!apiKey) {
   console.error('Missing GEMINI_API_KEY');
   process.exit(1);
 }
-const model = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.0-flash-preview-image-generation';
+const model = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image';
 const outDir = path.join(process.cwd(), 'public', 'stones');
 await fs.mkdir(outDir, { recursive: true });
 

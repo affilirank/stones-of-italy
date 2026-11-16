@@ -10,7 +10,7 @@ function buildPrompt(stoneName: string, stone: any) {
 async function callGemini(base64: string, mimeType: string, prompt: string) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not configured');
-  const model = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.0-flash-preview-image-generation';
+  const model = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   const res = await fetch(url, {
     method: 'POST',
