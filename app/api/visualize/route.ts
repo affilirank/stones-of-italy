@@ -80,15 +80,28 @@ export async function POST(req: NextRequest) {
 
     let base64 = imageBase64 || '';
     let mime = mimeType;
+    let sourceUrl = sampleRoomUrl as string | undefined;
+
+    if (typeof base64 === 'string' && /^https?:\/\//i.test(base64)) {
+      sourceUrl = base64;
+      base64 = '';
+    }
+
     if (base64.startsWith('data:')) {
       const m = base64.match(/^data:(.*?);base64,(.*)$/);
       if (m) { mime = m[1]; base64 = m[2]; }
     }
-    if (!base64 && sampleRoomUrl) {
-      const r = await fetch(sampleRoomUrl);
+
+    if (!base64 && sourceUrl) {
+      const r = await fetch(sourceUrl);
+      if (!r.ok) throw new Error(`Failed to fetch source image (${r.status})`);
       const ab = await r.arrayBuffer();
-      mime = r.headers.get('content-type') || 'image/jpeg';
+      mime = r.headers.get('content-type') || mime || 'image/jpeg';
       base64 = Buffer.from(ab).toString('base64');
+    }
+
+    if (!base64) {
+      return NextResponse.json({ error: 'Could not load image data for visualization' }, { status: 400 });
     }
 
     const hasGemini = !!process.env.GEMINI_API_KEY;
