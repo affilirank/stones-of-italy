@@ -7,7 +7,7 @@ export default function VisualizerTeaser() {
   const [slider, setSlider] = useState(50);
   const before = SAMPLE_ROOMS[0].image;
   const after = SAMPLE_ROOMS[1].image; // teaser contrast image
-  const stone = TOP_10_STONES[0];
+  const stone = TOP_10_STONES.find((s) => s.id === 'calacatta-laza-quartz') || TOP_10_STONES[0];
 
   return (
     <section className="py-20 bg-slate/60 border-b border-gold/20">
