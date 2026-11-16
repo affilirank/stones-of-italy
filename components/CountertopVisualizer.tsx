@@ -124,23 +124,39 @@ export default function CountertopVisualizer() {
             <div className="flex items-center justify-between mb-3">
               <label className="text-xs font-bold uppercase tracking-widest text-gold">Top 10 Signature Stones</label>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
               {TOP_10_STONES.map(stone => (
                 <button key={stone.id} type="button" onClick={() => setSelectedStoneId(stone.id)}
-                  className={`p-2.5 text-left transition-all border ${selectedStoneId === stone.id ? 'border-2 border-gold bg-slate/80' : 'border-gold/20 hover:border-gold/60 bg-slate/40'}`}>
-                  <div className="text-xs font-bold text-alabaster truncate">{stone.name}</div>
-                  <div className="text-[10px] text-gold/80 uppercase mb-1">{stone.type}</div>
-                  <div className="flex flex-wrap gap-1">
-                    <span className="text-[9px] px-1.5 py-0.5 border border-gold/30 text-alabaster/80">Heat: {stone.heatRating}</span>
-                    <span className="text-[9px] px-1.5 py-0.5 border border-gold/30 text-alabaster/80">Scratch: {stone.scratchRating}</span>
-                    <span className={`text-[9px] px-1.5 py-0.5 border ${stone.outdoorUvSafe ? 'border-emerald-400/50 text-emerald-300 bg-emerald-900/20' : 'border-gold/20 text-alabaster/50'}`}>
-                      {stone.outdoorUvSafe ? 'Indoor/Outdoor UV Safe' : 'Indoor Recommended'}
-                    </span>
+                  className={`text-left transition-all border overflow-hidden ${selectedStoneId === stone.id ? 'border-2 border-gold bg-slate/80 shadow-lg shadow-gold/10' : 'border-gold/20 hover:border-gold/60 bg-slate/40'}`}>
+                  <div className="flex gap-2.5 p-2.5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={stone.image} alt={`${stone.name} close-up slab`} className="w-16 h-16 sm:w-[72px] sm:h-[72px] object-cover border border-gold/30 flex-shrink-0 bg-obsidian" loading="lazy" />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-bold text-alabaster truncate">{stone.name}</div>
+                      <div className="text-[10px] text-gold/80 uppercase mb-1">{stone.type} • {stone.origin}</div>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-[9px] px-1.5 py-0.5 border border-gold/30 text-alabaster/80">Heat {stone.heatRating}</span>
+                        <span className="text-[9px] px-1.5 py-0.5 border border-gold/30 text-alabaster/80">Scratch {stone.scratchRating}</span>
+                        <span className={`text-[9px] px-1.5 py-0.5 border ${stone.outdoorUvSafe ? 'border-emerald-400/50 text-emerald-300 bg-emerald-900/20' : 'border-gold/20 text-alabaster/50'}`}>
+                          {stone.outdoorUvSafe ? 'UV Safe' : 'Indoor'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </button>
               ))}
             </div>
-            <div className="mt-3 text-[11px] text-alabaster/60">{selectedStone.description} {selectedStone.outdoorUvSafe && <span className="text-emerald-300">Excellent for Vero Beach outdoor summer kitchens.</span>}</div>
+            {selectedStone && (
+              <div className="mt-3 p-2.5 border border-gold/20 bg-obsidian/40 flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={selectedStone.image} alt={`${selectedStone.name} HD close-up`} className="w-20 h-20 object-cover border border-gold/30 flex-shrink-0" />
+                <div className="text-[11px] text-alabaster/70 leading-relaxed">
+                  <div className="text-alabaster font-semibold mb-0.5">{selectedStone.name} — HD slab close-up</div>
+                  {selectedStone.description} {selectedStone.outdoorUvSafe && <span className="text-emerald-300">Excellent for Vero Beach outdoor summer kitchens.</span>}
+                </div>
+              </div>
+            )}
+            {/* selected stone preview shown above */}
           </div>
         </div>
 

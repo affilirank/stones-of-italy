@@ -2,6 +2,8 @@ import StonesOfItalyLogo from '@/components/StonesOfItalyLogo';
 import CountertopVisualizer from '@/components/CountertopVisualizer';
 import InstantQuoteCalculator from '@/components/InstantQuoteCalculator';
 import AiChatConcierge from '@/components/AiChatConcierge';
+import BookingSection from '@/components/BookingSection';
+import { TOP_10_STONES } from '@/lib/stones';
 
 export default function Home() {
   return (
@@ -17,13 +19,13 @@ export default function Home() {
           </a>
           <nav className="hidden lg:flex items-center space-x-8">
             <a href="#visualizer" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">AI Visualizer</a>
-            <a href="#estimator" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">Instant Estimate</a>
-            <a href="#about" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">About</a>
+            <a href="#gallery" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">Top 10 Slabs</a>
+            <a href="#estimator" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">Instant Estimator</a>
             <a href="#reviews" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">Reviews</a>
           </nav>
           <div className="flex items-center gap-3">
-            <a href="#estimator" className="hidden sm:inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold tracking-wider text-alabaster uppercase border border-gold/40 hover:border-gold hover:bg-gold/10 transition-all">Get Instant Project Estimate</a>
-            <a href="tel:7722997560" className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold tracking-wider text-obsidian uppercase bg-gold hover:bg-gold-hover transition-all shadow-lg shadow-gold/20">Call 772-299-7560</a>
+            <a href="#estimator" className="hidden sm:inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold tracking-wider text-alabaster uppercase border border-gold/40 hover:border-gold hover:bg-gold/10 transition-all">Instant Estimate</a>
+            <a href="#booking" className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold tracking-wider text-obsidian uppercase bg-gold hover:bg-gold-hover transition-all shadow-lg shadow-gold/20">Book Showroom</a>
           </div>
         </div>
       </header>
@@ -61,11 +63,52 @@ export default function Home() {
       <section id="visualizer" className="py-24 bg-obsidian relative border-b border-gold/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">AI Countertop Photo Visualizer</span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-alabaster mb-4">Preview Your Kitchen or Bath with Our Top 10 Signature Stones</h2>
-            <p className="text-alabaster/70 text-base">Upload a photo or choose a sample Vero Beach kitchen, compare stones with an interactive before/after slider, and get an estimate for your selection.</p>
+            <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Interactive AI Experience</span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-alabaster mb-4">AI Kitchen &amp; Bath Countertop Visualizer</h2>
+            <p className="text-alabaster/70 text-base">Select your dream stone from our curated Italian &amp; global slab inventory and preview it instantly in real-time context with HD close-up slab imagery.</p>
           </div>
           <CountertopVisualizer />
+        </div>
+      </section>
+
+      <section id="gallery" className="py-24 bg-alabaster text-obsidian border-b border-gold/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Exclusive Hand-Selected Inventory</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-bold text-obsidian">Curated Italian &amp; Global Slabs</h2>
+            </div>
+            <p className="text-slate text-sm max-w-md mt-4 md:mt-0 font-light">Direct imported premium natural quartzite, marble, granite, quartz, porcelain, and dolomite slabs stocked at our Vero Beach yard. Tap a stone to visualize it.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {TOP_10_STONES.map((stone) => (
+              <div key={stone.id} className="bg-white border border-gold/20 hover:border-gold transition-all duration-300 group shadow-md hover:shadow-2xl flex flex-col">
+                <div className="relative h-64 overflow-hidden bg-obsidian">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={stone.image} alt={`${stone.name} HD close-up`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                  <div className="absolute top-4 left-4 bg-obsidian/90 text-gold text-[10px] font-bold uppercase tracking-widest px-3 py-1 border border-gold/30">{stone.type}</div>
+                  <div className="absolute bottom-4 right-4 bg-white/90 text-obsidian text-[10px] font-bold uppercase tracking-widest px-2.5 py-1">{stone.origin}</div>
+                </div>
+                <div className="p-6 flex flex-col flex-1">
+                  <div className="flex justify-between items-start mb-2 gap-3">
+                    <h3 className="font-serif text-xl font-bold">{stone.name}</h3>
+                    <span className="text-xs font-bold text-gold bg-gold/10 px-2 py-1 whitespace-nowrap">${stone.installedRateSqFt}/sf</span>
+                  </div>
+                  <p className="text-sm text-slate mb-4 leading-relaxed">{stone.description}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    <span className="text-[10px] px-2 py-1 border border-gold/30 text-obsidian/80 bg-alabaster">Heat: {stone.heatRating}</span>
+                    <span className="text-[10px] px-2 py-1 border border-gold/30 text-obsidian/80 bg-alabaster">Scratch: {stone.scratchRating}</span>
+                    <span className={`text-[10px] px-2 py-1 border ${stone.outdoorUvSafe ? 'border-emerald-500/40 text-emerald-700 bg-emerald-50' : 'border-slate/20 text-slate bg-alabaster'}`}>{stone.outdoorUvSafe ? 'Indoor/Outdoor UV Safe' : 'Indoor Recommended'}</span>
+                  </div>
+                  <div className="text-xs text-slate-light mb-4">Best for: {stone.bestFor.join(' • ')}</div>
+                  <div className="mt-auto grid grid-cols-2 gap-2">
+                    <a href="#visualizer" className="text-center py-2.5 border border-gold/40 text-obsidian text-xs font-bold uppercase tracking-wider hover:bg-gold/10 transition-colors">Visualize</a>
+                    <a href="#estimator" className="text-center py-2.5 bg-gold text-obsidian text-xs font-bold uppercase tracking-wider hover:bg-gold-hover transition-colors">Get Estimate</a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -79,6 +122,8 @@ export default function Home() {
           <InstantQuoteCalculator />
         </div>
       </section>
+
+      <BookingSection />
 
       <section id="about" className="py-20 bg-slate border-b border-gold/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -138,7 +183,7 @@ export default function Home() {
                 <StonesOfItalyLogo size={112} />
               </div>
               <p className="text-xs text-alabaster/60 leading-relaxed mb-4">Premier natural stone fabricators &amp; certified porcelain installers serving Vero Beach, Sebastian, and the entire Treasure Coast since 2001.</p>
-              <div className="text-xs text-gold">Licensed &amp; Insured</div>
+              <div className="text-xs text-gold">Licensed &amp; Insured #CBC1264821</div>
             </div>
             <div>
               <h4 className="font-serif text-lg font-bold text-alabaster mb-4 uppercase tracking-wider">Vero Beach Showroom</h4>
@@ -169,9 +214,10 @@ export default function Home() {
 
       {/* Sticky mobile bottom action bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel-dark border-t border-gold/30 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-        <div className="grid grid-cols-2 gap-3">
-          <a href="#visualizer" className="py-3 text-center bg-slate/70 border border-gold/40 text-alabaster text-xs font-bold uppercase tracking-wider">AI Visualizer</a>
-          <a href="#estimator" className="py-3 text-center bg-gold text-obsidian text-xs font-bold uppercase tracking-wider">Instant Estimate</a>
+        <div className="grid grid-cols-3 gap-2">
+          <a href="#visualizer" className="py-3 text-center bg-slate/70 border border-gold/40 text-alabaster text-[11px] font-bold uppercase tracking-wider">Visualizer</a>
+          <a href="#estimator" className="py-3 text-center bg-gold text-obsidian text-[11px] font-bold uppercase tracking-wider">Estimate</a>
+          <a href="#booking" className="py-3 text-center bg-slate/70 border border-gold/40 text-alabaster text-[11px] font-bold uppercase tracking-wider">Book</a>
         </div>
       </div>
 
