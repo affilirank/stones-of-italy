@@ -68,7 +68,7 @@ export default function Home() {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Personalized AI Visualization</span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-alabaster mb-4">Create Your Custom Stone Visualization</h2>
-            <p className="text-alabaster/70 text-base">Choose your photo and signature stone, complete a quick form, and we’ll generate your fresh AI before/after visualization below while capturing your request for follow-up and stone details.</p>
+            <p className="text-alabaster/70 text-base">Choose your photo and signature stone, enter a few details, and we’ll generate your fresh AI before/after visualization below and send your selected stone details to you.</p>
           </div>
           <CountertopVisualizer />
         </div>

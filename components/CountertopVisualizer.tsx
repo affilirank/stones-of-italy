@@ -113,8 +113,8 @@ export default function CountertopVisualizer() {
 
       setSubmitted(true);
       setNote(isMock
-        ? (vizData.note || 'Preview generated. We captured your request and can send the selected stone details to your email/phone follow-up.')
-        : 'Your AI visualization is ready below. We also captured your request so we can follow up and share your selected stone details.');
+        ? (vizData.note || 'Preview generated below. We’ll send your selected stone details to you shortly.')
+        : 'Your AI visualization is ready below. We’ll also send your selected stone details to you.');
       // scroll to result
       setTimeout(() => document.getElementById('visualizer-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     } catch (e: any) {
@@ -193,7 +193,7 @@ export default function CountertopVisualizer() {
           </div>
 
           <div className="mt-6 pt-4 border-t border-gold/20">
-            <div className="text-[11px] text-alabaster/60 mb-3">Complete the form below to generate your personalized AI visualization and receive your selected stone details.</div>
+            <div className="text-[11px] text-alabaster/60 mb-3">Enter your details to generate your personalized AI visualization and receive your selected stone details.</div>
             <button onClick={getEstimateForStone} type="button" className="w-full py-3 border border-gold/40 text-alabaster text-xs font-bold uppercase tracking-widest hover:bg-gold/10 transition-colors">
               Get Estimate for This Stone
             </button>
@@ -202,8 +202,8 @@ export default function CountertopVisualizer() {
 
         <div className="lg:col-span-7 p-6 sm:p-8 bg-obsidian/40">
           <div className="mb-5">
-            <div className="text-xs font-bold uppercase tracking-widest text-gold mb-1">3) Get Your AI Visualization (Lead Capture)</div>
-            <p className="text-sm text-alabaster/70">Enter your details to render a fresh AI visualization with <span className="text-gold font-semibold">{selectedStone.name}</span>. We’ll capture your request so we can follow up and share your selected stone details.</p>
+            <div className="text-xs font-bold uppercase tracking-widest text-gold mb-1">3) Get Your Personalized AI Visualization</div>
+            <p className="text-sm text-alabaster/70">Enter your details to render a fresh AI visualization with <span className="text-gold font-semibold">{selectedStone.name}</span>. We’ll generate your result below and send your selected stone details to you.</p>
           </div>
 
           <form onSubmit={generateAndCapture} className="space-y-4">
@@ -245,7 +245,7 @@ export default function CountertopVisualizer() {
             </div>
 
             <div className="p-3 border border-gold/20 bg-slate/30 text-[11px] text-alabaster/60">
-              By submitting, you’ll receive your personalized visualization and we may follow up by phone/email with your selected stone details and estimate options.
+              By submitting, you’ll receive your personalized visualization and your selected stone details by phone/email.
             </div>
 
             <button disabled={loading} type="submit" className="w-full py-3.5 bg-gold text-obsidian text-xs font-bold uppercase tracking-widest hover:bg-gold-hover transition-colors disabled:opacity-60 shadow-lg shadow-gold/20">
@@ -311,7 +311,7 @@ export default function CountertopVisualizer() {
             <div className="absolute inset-0 z-20 flex items-center justify-center bg-obsidian/50 backdrop-blur-[1px]">
               <div className="text-center px-6 py-5 border border-gold/30 bg-obsidian/70 max-w-lg">
                 <div className="text-gold font-semibold uppercase tracking-widest text-xs mb-2">Personalized Result Area</div>
-                <div className="text-sm text-alabaster/80">Choose a photo and stone, complete the form, and your AI before/after visualization will appear here. We’ll also capture your details so we can follow up and share your selected stone.</div>
+                <div className="text-sm text-alabaster/80">Choose a photo and stone, enter your details, and your AI before/after visualization will appear here. We’ll also send your selected stone details to you.</div>
               </div>
             </div>
           )}

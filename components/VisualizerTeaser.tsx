@@ -16,7 +16,7 @@ export default function VisualizerTeaser() {
           <div className="lg:col-span-5">
             <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">AI Visualization Teaser</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-alabaster mb-4">See the Transformation Before You Commit</h2>
-            <p className="text-alabaster/70 mb-5">Preview how premium stone can elevate a space, then create a <span className="text-alabaster font-semibold">personalized AI visualization</span> from your own kitchen or bath photo. Submit your details and we’ll generate your custom result and follow up with your selected stone details.</p>
+            <p className="text-alabaster/70 mb-5">Preview how premium stone can elevate a space, then create a <span className="text-alabaster font-semibold">personalized AI visualization</span> from your own kitchen or bath photo. Enter a few details and we’ll generate your custom result and send your selected stone details to you.</p>
             <ul className="space-y-2 text-sm text-alabaster/75 mb-6">
               <li>• Upload your photo or use a sample Vero Beach kitchen</li>
               <li>• Choose from our Top 10 signature stones</li>
