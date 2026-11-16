@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { TOP_10_STONES, SAMPLE_ROOMS } from '@/lib/stones';
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -21,25 +21,10 @@ export default function CountertopVisualizer() {
   const [note, setNote] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [sampleId, setSampleId] = useState(SAMPLE_ROOMS[0].id);
-  const [compareWidth, setCompareWidth] = useState(0);
+  const [mockPreview, setMockPreview] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-  const compareRef = useRef<HTMLDivElement>(null);
 
   const selectedStone = useMemo(() => TOP_10_STONES.find(s => s.id === selectedStoneId)!, [selectedStoneId]);
-
-  useEffect(() => {
-    const el = compareRef.current;
-    if (!el) return;
-    const update = () => setCompareWidth(el.clientWidth);
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    window.addEventListener('resize', update);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener('resize', update);
-    };
-  }, []);
 
   function onSampleChange(id: string) {
     setSampleId(id);
@@ -47,6 +32,7 @@ export default function CountertopVisualizer() {
     setBeforeUrl(room.image);
     setFile(null);
     setAfterUrl(null);
+    setMockPreview(false);
     if (fileRef.current) fileRef.current.value = '';
   }
 
@@ -57,6 +43,7 @@ export default function CountertopVisualizer() {
     const url = await readFileAsDataUrl(f);
     setBeforeUrl(url);
     setAfterUrl(null);
+    setMockPreview(false);
   }
 
   async function generate() {
@@ -76,12 +63,17 @@ export default function CountertopVisualizer() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Visualization failed');
-      if (data.afterImageUrl) setAfterUrl(data.afterImageUrl);
+      const out = data.afterImageUrl || beforeUrl;
+      const isMock = !!data.mock || out === beforeUrl || out === imageBase64;
+      setAfterUrl(out);
+      setMockPreview(isMock);
       if (data.note) setNote(data.note);
-      else if (data.mock) setNote('Mock visualization mode (no API key configured). Configure GEMINI_API_KEY or REPLICATE_API_TOKEN to enable AI rendering.');
+      else if (isMock) setNote('Mock visualization mode (no AI key configured). Configure GEMINI_API_KEY or REPLICATE_API_TOKEN to enable AI rendering. Showing a preview overlay so you can test the before/after slider.');
+      else setNote(null);
     } catch (e: any) {
-      setNote(e.message || 'Visualization failed. A mock/fallback preview is shown when keys are not configured.');
-      if (!afterUrl) setAfterUrl(beforeUrl);
+      setAfterUrl(beforeUrl);
+      setMockPreview(true);
+      setNote((e.message || 'Visualization failed.') + ' Showing preview mode so you can test the before/after slider.');
     } finally {
       setLoading(false);
     }
@@ -156,7 +148,6 @@ export default function CountertopVisualizer() {
                 </div>
               </div>
             )}
-            {/* selected stone preview shown above */}
           </div>
         </div>
 
@@ -168,32 +159,40 @@ export default function CountertopVisualizer() {
             Get Estimate for This Stone
           </button>
           {note && <div className="text-[11px] text-amber-200/90 bg-amber-900/20 border border-amber-500/20 p-2">{note}</div>}
-          {!afterUrl && <div className="text-[11px] text-alabaster/50">Tip: click “Render Selected Stone” to generate/apply a visualization (mock preview shown if no AI key is configured).</div>}
+          {!afterUrl && <div className="text-[11px] text-alabaster/50">Tip: click “Render Selected Stone” to generate a visualization. Drag the slider to compare before/after (mock preview if no AI key is configured).</div>}
         </div>
       </div>
 
-      <div ref={compareRef} className="lg:col-span-7 relative min-h-[420px] lg:min-h-[580px] bg-black select-none overflow-hidden">
-        {/* After / result layer */}
-        <img src={showAfter} className="absolute inset-0 w-full h-full object-cover" alt={`Visualization with ${selectedStone.name}`} />
-        <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
-          {selectedStone.name}
-        </span>
+      <div className="lg:col-span-7 relative min-h-[420px] lg:min-h-[580px] bg-black select-none overflow-hidden">
+        {/* Before (base) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={beforeUrl} className="absolute inset-0 w-full h-full object-cover" alt="Before countertop" />
+        <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/90 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 z-20 pointer-events-none">Before</span>
 
-        {/* Before layer clipped */}
-        <div className="absolute inset-y-0 left-0 overflow-hidden z-10 border-r-2 border-gold shadow-2xl" style={{ width: `${slider}%` }}>
+        {/* After (clipped overlay) */}
+        <div
+          className="absolute inset-0 z-10 overflow-hidden"
+          style={{ clipPath: `inset(0 ${100 - slider}% 0 0)` }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={beforeUrl}
-            alt="Before"
-            className="absolute top-0 left-0 h-full max-w-none object-cover"
-            style={{ width: compareWidth ? `${compareWidth}px` : '100vw' }}
+            src={showAfter}
+            className="absolute inset-0 w-full h-full object-cover"
+            alt={`After with ${selectedStone.name}`}
+            style={mockPreview ? { filter: 'saturate(1.12) contrast(1.04) sepia(0.08) hue-rotate(-6deg)' } : undefined}
           />
-          <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/80 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 pointer-events-none">Before</span>
+          {mockPreview && (
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-gold/10 via-transparent to-white/5 mix-blend-overlay" />
+          )}
+          <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
+            After • {selectedStone.name}{mockPreview ? ' (Preview)' : ''}
+          </span>
         </div>
 
-        {/* Handle */}
-        <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 flex items-center justify-center pointer-events-none" style={{ left: `${slider}%` }}>
-          <div className="w-10 h-10 rounded-full bg-gold text-obsidian flex items-center justify-center shadow-2xl font-bold border-2 border-alabaster">↔</div>
-          <div className="absolute top-0 bottom-0 w-px bg-gold/0" />
+        {/* Divider + handle */}
+        <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 pointer-events-none" style={{ left: `${slider}%` }}>
+          <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-gold shadow-[0_0_0_1px_rgba(0,0,0,0.2)]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gold text-obsidian flex items-center justify-center shadow-2xl font-bold border-2 border-alabaster">↔</div>
         </div>
 
         <input
@@ -205,6 +204,12 @@ export default function CountertopVisualizer() {
           className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-40 m-0"
           aria-label="Before and after comparison slider"
         />
+
+        {!afterUrl && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-obsidian/70 backdrop-blur-md border border-gold/30 px-3 py-1.5 text-[11px] text-alabaster/80 pointer-events-none">
+            Drag slider • Click “Render Selected Stone” for AI/mock preview
+          </div>
+        )}
       </div>
     </div>
   );
