@@ -29,11 +29,36 @@ export async function POST(req: NextRequest) {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       // Fallback rule-based response if no LLM key
-      const last = messages[messages.length - 1]?.content?.toLowerCase?.() || '';
-      let reply = "I can help with stone selection, durability, pricing, and booking a free in-home measurement or showroom slab walk at 4646 US-1, Vero Beach. What's your project (kitchen, bath, outdoor) and how do you use the space?";
-      if (last.includes('outdoor')) reply = "For Florida outdoor kitchens, I recommend Statuario Porcelain (UV/heat/stain proof) or Taj Mahal/Sea Pearl Quartzite (durable natural stone, sealed). Quartz is not ideal in direct sun. Want me to help you book a free in-home measurement or showroom slab walk?";
-      else if (last.includes('marble') && (last.includes('cook') || last.includes('kitchen'))) reply = "For heavy cooks, I recommend Taj Mahal Quartzite over marble — it gives a luxurious look with far better resistance to heat and etching. Calacatta Gold Marble is stunning for lower-use areas or bath vanities. Can I get your name and phone number to schedule a free in-home measurement or showroom visit?";
-      else if (last.includes('price') || last.includes('quote')) reply = "Installed pricing in Vero Beach typically ranges from about $55–$135/sq ft depending on the stone and options. Use our Instant Quote tool for a precision installed estimate range, and I can help book a free in-home measurement. What's your name and best phone number?";
+      const last = (messages[messages.length - 1]?.content || '').toLowerCase();
+
+      const hours = "Our showroom hours are Monday–Friday 8:00 AM–5:00 PM and Saturday 8:00 AM–2:00 PM (closed Sunday).";
+      const location = "We're located at 4646 US-1, Vero Beach, FL 32967.";
+      const phone = "You can reach us at (772) 299-7560.";
+
+      let reply = "I can help with stone selection, durability, pricing, hours, and booking a free in-home measurement or showroom slab walk at 4646 US-1, Vero Beach. What's your project (kitchen, bath, or outdoor), and how do you use the space?";
+
+      if (/\b(hour|hours|open|close|closing|closed|today|tomorrow|saturday|sunday|weekend|time)\b/.test(last)) {
+        reply = `${hours} ${location} ${phone} Would you like to schedule a showroom visit or a free in-home estimate?`;
+      } else if (/\b(where|address|location|directions|located|showroom)\b/.test(last)) {
+        reply = `${location} ${hours} ${phone} You're welcome to stop by the showroom to view slabs in person.`;
+      } else if (/\b(phone|call|number|contact|reach)\b/.test(last)) {
+        reply = `${phone} ${hours} ${location} If you'd like, share your name and number here and I can arrange a quick callback/free estimate.`;
+      } else if (/\b(turnaround|how long|timeline|install|installation|template|templating|fabricat)\b/.test(last)) {
+        reply = "Most projects are completed in about 5–7 days from laser templating to professional installation (timing can vary by material and project scope). We handle laser templating, custom in-house fabrication, edge profiling, and professional installation. Want me to help you get a precision estimate?";
+      } else if (/\b(outdoor|outside|patio|bbq|summer kitchen|uv|sun)\b/.test(last)) {
+        reply = "For Florida outdoor kitchens, I recommend Statuario Porcelain (UV/heat/stain resistant) or durable quartzites like Taj Mahal or Sea Pearl (properly sealed). Quartz is not ideal for direct prolonged sun exposure. Would you like a recommendation based on your style and maintenance preference?";
+      } else if (/\b(marble)\b/.test(last) && /\b(cook|kitchen|heavy|etch|stain)\b/.test(last)) {
+        reply = "For heavy cooks, I usually recommend Taj Mahal Quartzite over marble — it offers a similar luxurious look with much better resistance to heat and etching. Calacatta Gold or Carrara marble is beautiful for lower-use areas or bath vanities. Can I help you compare options or book a free estimate?";
+      } else if (/\b(quartzite|quartz|granite|porcelain|dolomite|stone|material|slab)\b/.test(last)) {
+        reply = "We carry premium quartzite, marble, quartz, granite, porcelain, and dolomite. Popular choices include Taj Mahal Quartzite (durable, great for kitchens/outdoors), Calacatta Gold Marble (luxury), Calacatta Laza Quartz (low maintenance), Sea Pearl Quartzite (coastal), and Statuario Porcelain (excellent for outdoor/UV). Tell me your space (kitchen, bath, or outdoor) and how you use it, and I’ll recommend the best fit.";
+      } else if (/\b(price|pricing|cost|quote|estimate|budget|how much)\b/.test(last)) {
+        reply = "Installed pricing in Vero Beach typically ranges from about $60–$135/sq ft depending on the stone and project details (edges, cutouts, tear-out, etc.). For the most accurate number, use our Precision Countertop Project Estimator on this page for an installed range, and I can also help arrange a free in-home measurement. What type of project are you planning?";
+      } else if (/\b(appointment|book|schedule|visit|measure|measurement|consult)\b/.test(last)) {
+        reply = `We’d be happy to help with a free in-home measurement or showroom visit. ${location} ${hours} ${phone} If you share your name and phone number here, I can arrange a quick callback for you.`;
+      } else if (/\b(services|do you|fabricat|template|install|remodel)\b/.test(last)) {
+        reply = "We provide custom countertop solutions including laser templating, in-house fabrication, edge profiling, and professional installation for kitchens, baths, vanities, and outdoor spaces across the Treasure Coast. Most projects are completed in about 5–7 days from template to install. What are you working on?";
+      }
+
       return NextResponse.json({ reply, fallback: true });
     }
 

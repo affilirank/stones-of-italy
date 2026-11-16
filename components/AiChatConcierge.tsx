@@ -29,9 +29,9 @@ export default function AiChatConcierge() {
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, open, loading]);
 
   const quickReplies = [
+    'What are your business hours?',
     'Best stone for outdoor kitchen?',
     'Quartzite vs marble for heavy cooks',
-    'Show me low-maintenance options',
     'I want a free estimate',
   ];
 
