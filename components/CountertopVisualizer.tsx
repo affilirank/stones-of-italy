@@ -128,6 +128,7 @@ export default function CountertopVisualizer() {
   }
 
   const showAfter = afterUrl || beforeUrl;
+  const displayAfter = !!afterUrl;
 
   return (
     <div className="space-y-8">
@@ -257,14 +258,18 @@ export default function CountertopVisualizer() {
         </div>
       </div>
 
-      {/* Result appears below form after submission */}
+      {/* Result / mockup visual */}
       <div id="visualizer-result" className="glass-panel-dark border border-gold/30 overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-gold/20 flex items-center justify-between gap-3 bg-slate/30">
           <div>
-            <div className="text-xs font-bold uppercase tracking-widest text-gold">Your AI Visualization Result</div>
-            <div className="text-sm text-alabaster/80">{afterUrl ? `${selectedStone.name} applied to your selected photo` : 'Submit the form above to generate your personalized before/after visualization here.'}</div>
+            <div className="text-xs font-bold uppercase tracking-widest text-gold">{displayAfter ? 'Your AI Visualization Result' : 'Before & After Mockup Preview'}</div>
+            <div className="text-sm text-alabaster/80">
+              {displayAfter
+                ? `${selectedStone.name} applied to your selected photo`
+                : `Mockup preview with ${selectedStone.name}. Enter your details above to generate your personalized AI before/after visualization.`}
+            </div>
           </div>
-          {afterUrl && <a href="#estimator" className="hidden sm:inline-flex px-4 py-2 bg-gold text-obsidian text-xs font-bold uppercase tracking-wider">Get Estimate</a>}
+          {displayAfter && <a href="#estimator" className="hidden sm:inline-flex px-4 py-2 bg-gold text-obsidian text-xs font-bold uppercase tracking-wider">Get Estimate</a>}
         </div>
         <div className="relative min-h-[360px] sm:min-h-[480px] lg:min-h-[560px] bg-black select-none overflow-hidden">
           {/* Before */}
@@ -272,47 +277,38 @@ export default function CountertopVisualizer() {
           <img src={beforeUrl} className="absolute inset-0 w-full h-full object-cover" alt="Before countertop" />
           <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/90 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 z-20 pointer-events-none">Before</span>
 
-          {/* After overlay */}
-          <div className="absolute inset-0 z-10 overflow-hidden" style={{ clipPath: afterUrl ? `inset(0 ${100 - slider}% 0 0)` : 'inset(0 50% 0 0)' }}>
+          {/* After overlay (real result or mockup preview) */}
+          <div className="absolute inset-0 z-10 overflow-hidden" style={{ clipPath: `inset(0 ${100 - slider}% 0 0)` }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={showAfter}
               className="absolute inset-0 w-full h-full object-cover"
-              alt={`After with ${selectedStone.name}`}
-              style={mockPreview ? { filter: 'saturate(1.12) contrast(1.04) sepia(0.08) hue-rotate(-6deg)' } : undefined}
+              alt={displayAfter ? `After with ${selectedStone.name}` : `After mockup preview with ${selectedStone.name}`}
+              style={{ filter: displayAfter && !mockPreview ? undefined : 'saturate(1.14) contrast(1.05) sepia(0.08) hue-rotate(-4deg) brightness(1.02)' }}
             />
-            {mockPreview && <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-gold/10 via-transparent to-white/5 mix-blend-overlay" />}
-            {afterUrl && (
-              <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
-                After • {selectedStone.name}{mockPreview ? ' (Preview)' : ''}
-              </span>
-            )}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-gold/10 via-transparent to-white/5 mix-blend-overlay" />
+            <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
+              {displayAfter ? `After • ${selectedStone.name}${mockPreview ? ' (Preview)' : ''}` : `After Mockup • ${selectedStone.name}`}
+            </span>
           </div>
 
-          {afterUrl && (
-            <>
-              <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 pointer-events-none" style={{ left: `${slider}%` }}>
-                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-gold shadow-[0_0_0_1px_rgba(0,0,0,0.2)]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gold text-obsidian flex items-center justify-center shadow-2xl font-bold border-2 border-alabaster">↔</div>
-              </div>
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={slider}
-                onChange={e => setSlider(Number(e.target.value))}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-40 m-0"
-                aria-label="Before and after comparison slider"
-              />
-            </>
-          )}
+          <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 pointer-events-none" style={{ left: `${slider}%` }}>
+            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-gold shadow-[0_0_0_1px_rgba(0,0,0,0.2)]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gold text-obsidian flex items-center justify-center shadow-2xl font-bold border-2 border-alabaster">↔</div>
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={slider}
+            onChange={e => setSlider(Number(e.target.value))}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-40 m-0"
+            aria-label="Before and after comparison slider"
+          />
 
-          {!afterUrl && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-obsidian/50 backdrop-blur-[1px]">
-              <div className="text-center px-6 py-5 border border-gold/30 bg-obsidian/70 max-w-lg">
-                <div className="text-gold font-semibold uppercase tracking-widest text-xs mb-2">Personalized Result Area</div>
-                <div className="text-sm text-alabaster/80">Choose a photo and stone, enter your details, and your AI before/after visualization will appear here. We’ll also send your selected stone details to you.</div>
-              </div>
+          {!displayAfter && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-obsidian/70 backdrop-blur-md border border-gold/30 px-3 py-1.5 text-[11px] text-alabaster/80 pointer-events-none">
+              Mockup preview • Submit above to generate your personalized AI result
             </div>
           )}
         </div>
