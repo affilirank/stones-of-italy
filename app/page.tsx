@@ -9,12 +9,12 @@ export default function Home() {
   return (
     <main className="pb-20 md:pb-0">
       <header className="sticky top-0 z-50 glass-panel-dark border-b border-gold/20 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-28 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-4 group">
-            <StonesOfItalyLogo size={76} />
-            <div className="hidden sm:block">
-              <span className="block font-serif text-xl font-bold tracking-wider text-alabaster uppercase leading-tight group-hover:text-gold transition-colors">Stones of Italy</span>
-              <span className="block font-sans text-xs tracking-widest text-gold uppercase">Vero Beach • Master Stone Crafters</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[88px] md:h-28 flex items-center justify-between gap-3 py-3 md:py-0">
+          <a href="#" className="flex items-center gap-3 md:gap-4 group min-w-0 flex-1">
+            <StonesOfItalyLogo size={60} className="md:!w-[76px] md:!h-[76px] flex-shrink-0" />
+            <div className="min-w-0">
+              <span className="block font-serif text-sm sm:text-lg md:text-xl font-bold tracking-wider text-alabaster uppercase leading-tight group-hover:text-gold transition-colors truncate">Stones of Italy</span>
+              <span className="block font-sans text-[10px] sm:text-xs tracking-widest text-gold uppercase leading-snug">Vero Beach • Master Stone Crafters</span>
             </div>
           </a>
           <nav className="hidden lg:flex items-center space-x-8">
@@ -23,9 +23,9 @@ export default function Home() {
             <a href="#estimator" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">Instant Estimator</a>
             <a href="#reviews" className="text-sm uppercase tracking-wider text-alabaster/80 hover:text-gold transition-colors">Reviews</a>
           </nav>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
             <a href="#estimator" className="hidden sm:inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold tracking-wider text-alabaster uppercase border border-gold/40 hover:border-gold hover:bg-gold/10 transition-all">Instant Estimate</a>
-            <a href="#booking" className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-bold tracking-wider text-obsidian uppercase bg-gold hover:bg-gold-hover transition-all shadow-lg shadow-gold/20">Book Showroom</a>
+            <a href="#booking" className="inline-flex items-center justify-center px-3 sm:px-5 py-2 sm:py-2.5 text-[10px] sm:text-xs font-bold tracking-wider text-obsidian uppercase bg-gold hover:bg-gold-hover transition-all shadow-lg shadow-gold/20 whitespace-nowrap">Book Showroom</a>
           </div>
         </div>
       </header>
