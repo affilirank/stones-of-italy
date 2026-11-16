@@ -26,15 +26,18 @@ export default function VisualizerTeaser() {
           </div>
           <div className="lg:col-span-7">
             <div className="relative min-h-[320px] sm:min-h-[440px] border border-gold/30 overflow-hidden bg-black shadow-2xl">
+              {/* After (base) */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={before} alt="Kitchen before mockup" className="absolute inset-0 w-full h-full object-cover" />
-              <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/90 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 z-20 pointer-events-none">Before</span>
+              <img src={after} alt="Kitchen after mockup" className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'saturate(1.08) contrast(1.04) brightness(1.02)' }} />
+              <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">After Mockup • {stone.name}</span>
+
+              {/* Before (top overlay, swiped away to reveal after) */}
               <div className="absolute inset-0 z-10 overflow-hidden" style={{ clipPath: `inset(0 ${100 - slider}% 0 0)` }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={after} alt="Kitchen after mockup" className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'saturate(1.08) contrast(1.04) brightness(1.02)' }} />
-                <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-gold/10 via-transparent to-white/5 mix-blend-overlay" />
-                <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">After Mockup • {stone.name}</span>
+                <img src={before} alt="Kitchen before mockup" className="absolute inset-0 w-full h-full object-cover" />
+                <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/90 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 z-20 pointer-events-none">Before</span>
               </div>
+
               <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 pointer-events-none" style={{ left: `${slider}%` }}>
                 <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-gold shadow-[0_0_0_1px_rgba(0,0,0,0.2)]" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gold text-obsidian flex items-center justify-center shadow-2xl font-bold border-2 border-alabaster">↔</div>

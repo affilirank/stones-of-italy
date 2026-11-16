@@ -16,7 +16,7 @@ export default function CountertopVisualizer() {
   const [selectedStoneId, setSelectedStoneId] = useState(TOP_10_STONES[0].id);
   const [beforeUrl, setBeforeUrl] = useState(SAMPLE_ROOMS[0].image);
   const [afterUrl, setAfterUrl] = useState<string | null>(null);
-  const [slider, setSlider] = useState(55);
+  const [slider, setSlider] = useState(50);
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -272,24 +272,24 @@ export default function CountertopVisualizer() {
           {displayAfter && <a href="#estimator" className="hidden sm:inline-flex px-4 py-2 bg-gold text-obsidian text-xs font-bold uppercase tracking-wider">Get Estimate</a>}
         </div>
         <div className="relative min-h-[360px] sm:min-h-[480px] lg:min-h-[560px] bg-black select-none overflow-hidden">
-          {/* Before */}
+          {/* After (base) */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={beforeUrl} className="absolute inset-0 w-full h-full object-cover" alt="Before countertop" />
-          <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/90 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 z-20 pointer-events-none">Before</span>
+          <img
+            src={showAfter}
+            className="absolute inset-0 w-full h-full object-cover"
+            alt={displayAfter ? `After with ${selectedStone.name}` : `After mockup preview with ${selectedStone.name}`}
+            style={{ filter: displayAfter && !mockPreview ? undefined : 'saturate(1.14) contrast(1.05) sepia(0.08) hue-rotate(-4deg) brightness(1.02)' }}
+          />
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-gold/10 via-transparent to-white/5 mix-blend-overlay" />
+          <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
+            {displayAfter ? `After • ${selectedStone.name}${mockPreview ? ' (Preview)' : ''}` : `After Mockup • ${selectedStone.name}`}
+          </span>
 
-          {/* After overlay (real result or mockup preview) */}
+          {/* Before (top overlay, swiped away to reveal after) */}
           <div className="absolute inset-0 z-10 overflow-hidden" style={{ clipPath: `inset(0 ${100 - slider}% 0 0)` }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={showAfter}
-              className="absolute inset-0 w-full h-full object-cover"
-              alt={displayAfter ? `After with ${selectedStone.name}` : `After mockup preview with ${selectedStone.name}`}
-              style={{ filter: displayAfter && !mockPreview ? undefined : 'saturate(1.14) contrast(1.05) sepia(0.08) hue-rotate(-4deg) brightness(1.02)' }}
-            />
-            <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-gold/10 via-transparent to-white/5 mix-blend-overlay" />
-            <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
-              {displayAfter ? `After • ${selectedStone.name}${mockPreview ? ' (Preview)' : ''}` : `After Mockup • ${selectedStone.name}`}
-            </span>
+            <img src={beforeUrl} className="absolute inset-0 w-full h-full object-cover" alt="Before countertop" />
+            <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/90 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 z-20 pointer-events-none">Before</span>
           </div>
 
           <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 pointer-events-none" style={{ left: `${slider}%` }}>
