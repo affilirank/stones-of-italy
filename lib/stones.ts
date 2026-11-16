@@ -29,9 +29,9 @@ export const TOP_10_STONES: Stone[] = [
 ];
 
 export const SAMPLE_ROOMS = [
+  { id: 'vero-classic-kitchen', label: 'Outdated Vero Beach Kitchen (Before)', image: 'https://media.clicksites.ai/clicksites/uploads/3362/outdated_1990s_kitchen_with_wo_e2f1ee8cbc77fc2fdb26a5ebf7dce5b3.png' },
+  { id: 'vero-transitional-kitchen', label: 'Vero Beach Transitional Kitchen (After)', image: 'https://media.clicksites.ai/clicksites/uploads/3362/modern_luxury_kitchen_featurin_f0c815fa13776b86da76c2d178c98d80.png' },
   { id: 'vero-coastal-kitchen', label: 'Vero Beach Coastal Kitchen', image: 'https://media.clicksites.ai/clicksites/uploads/3362/ultra_luxury_modern_kitchen_in_6d56718ddbeccdb7b307eca9bf3140ad.png' },
-  { id: 'vero-transitional-kitchen', label: 'Vero Beach Transitional Kitchen', image: 'https://media.clicksites.ai/clicksites/uploads/3362/modern_luxury_kitchen_featurin_f0c815fa13776b86da76c2d178c98d80.png' },
-  { id: 'vero-classic-kitchen', label: 'Vero Beach Classic Kitchen', image: 'https://media.clicksites.ai/clicksites/uploads/3362/outdated_1990s_kitchen_with_wo_e2f1ee8cbc77fc2fdb26a5ebf7dce5b3.png' },
 ];
 
 export function getStoneById(id: string) {
