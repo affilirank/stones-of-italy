@@ -7,12 +7,31 @@ type Msg = { role: 'user' | 'assistant'; content: string };
 function extractContact(text: string) {
   const phoneMatch = text.match(/(\+?1?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/);
   const emailMatch = text.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
-  // naive name: "my name is ..." or "I'm ..." or "this is ..."
-  const nameMatch = text.match(/(?:my name is|i'?m|this is|i am)\s+([a-zA-Z][a-zA-Z'.-]*(?:\s+[a-zA-Z][a-zA-Z'.-]*){0,3})/i);
+
+  let name = '';
+  const explicitNameMatch = text.match(/(?:my name is|i'?m|this is|i am)\s+([a-zA-Z][a-zA-Z'.-]*(?:\s+[a-zA-Z][a-zA-Z'.-]*){0,3})/i);
+  if (explicitNameMatch) {
+    name = explicitNameMatch[1].trim().replace(/[,.!?]+$/, '');
+  } else {
+    // If message looks like "Daniel Brown 772 290-1756" or "Daniel Brown, 772..."
+    let cleaned = text
+      .replace(emailMatch?.[1] || '', ' ')
+      .replace(phoneMatch?.[1] || '', ' ')
+      .replace(/[^a-zA-Z\s'.-]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    // avoid capturing common non-name phrases
+    if (cleaned && !/\b(what|hours|open|close|estimate|price|quote|kitchen|bath|outdoor|stone|marble|quartz|granite|yes|no|hi|hello|hey)\b/i.test(cleaned)) {
+      const parts = cleaned.split(' ').filter(Boolean);
+      if (parts.length >= 2 && parts.length <= 4) name = cleaned;
+      else if (parts.length === 1 && parts[0].length >= 2) name = cleaned;
+    }
+  }
+
   return {
     phone: phoneMatch ? phoneMatch[1].trim() : '',
     email: emailMatch ? emailMatch[1].trim() : '',
-    name: nameMatch ? nameMatch[1].trim().replace(/[,.!?]+$/, '') : '',
+    name,
   };
 }
 
@@ -77,6 +96,9 @@ export default function AiChatConcierge() {
       setContact(merged);
     }
 
+    const providedContactInfo = !!(found.name || found.phone || found.email);
+    const priorAskedForEstimate = messages.some(m => /estimate|callback|call|book|appointment|measure|showroom|quote|visit|schedule/i.test(m.content));
+
     const next: Msg[] = [...messages, { role: 'user', content }];
     setMessages(next);
     setInput('');
@@ -87,14 +109,31 @@ export default function AiChatConcierge() {
       const data = await res.json();
       let reply = data.reply || 'How else can I assist with your countertop project?';
 
-      // auto-capture when we have enough info and intent
-      const intent = /estimate|callback|call me|book|appointment|measure|showroom|quote|visit|schedule/i.test(content) || /estimate|callback|measure|showroom|visit|schedule/i.test(reply);
+      // auto-capture when we have enough info and intent/context
+      const intent = /estimate|callback|call me|book|appointment|measure|showroom|quote|visit|schedule/i.test(content)
+        || /estimate|callback|measure|showroom|visit|schedule/i.test(reply)
+        || (providedContactInfo && priorAskedForEstimate);
+
       let appended = '';
-      if (!captured && intent && merged.name && merged.phone) {
+      if (!captured && merged.name && merged.phone && (intent || providedContactInfo)) {
         const ok = await submitLead(merged, content);
-        if (ok) appended = `\n\nI’ve got your details (${merged.name}, ${merged.phone}). I’m notifying our team now so you can get a quick follow-up/callback to schedule your free estimate.`;
+        if (ok) {
+          reply = `Thank you, ${merged.name.split(' ')[0]} — I’ve got your details (${merged.phone}${merged.email ? `, ${merged.email}` : ''}). I’m notifying our team now so you can get a quick follow-up/callback to schedule your free in-home measurement or showroom visit.`;
+          appended = '';
+        } else {
+          appended = `\n\nI have your details (${merged.name}, ${merged.phone}), but I couldn't submit the request just now. Please call (772) 299-7560 and we’ll help right away.`;
+        }
       } else if (!captured && intent && (!merged.name || !merged.phone)) {
-        appended = `\n\nIf you’d like, share your name and best phone number right here in chat and I’ll arrange a quick callback/free estimate for you.`;
+        const missing = [!merged.name ? 'name' : null, !merged.phone ? 'phone number' : null].filter(Boolean).join(' and ');
+        appended = `\n\nIf you’d like, share your ${missing} right here in chat and I’ll arrange a quick callback/free estimate for you.`;
+      } else if (!captured && providedContactInfo && (!merged.name || !merged.phone)) {
+        const missing = [!merged.name ? 'name' : null, !merged.phone ? 'phone number' : null].filter(Boolean).join(' and ');
+        appended = `\n\nThanks — I’ve noted that. Please also share your ${missing} so I can arrange your callback/free estimate.`;
+      }
+
+      // If user provided contact info and we captured, avoid repeating the "share your number" prompt
+      if (captured) {
+        appended = '';
       }
 
       setMessages([...next, { role: 'assistant', content: reply + appended }]);
