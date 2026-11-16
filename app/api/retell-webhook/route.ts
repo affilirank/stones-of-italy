@@ -55,13 +55,16 @@ export async function POST(req: NextRequest) {
       '';
 
     const isVoicemail = status === 'no-answer' || status === 'voicemail' || /voicemail/i.test(String(summary));
-    const callOutcome: 'appointment-booked' | 'call-connected' | 'voicemail-left' = isVoicemail
-      ? 'voicemail-left'
-      : appointmentBooked
-        ? 'appointment-booked'
+    const callOutcome: 'appointment-booked' | 'call-connected' | 'voicemail-left' = appointmentBooked
+      ? 'appointment-booked'
+      : isVoicemail
+        ? 'voicemail-left'
         : 'call-connected';
 
-    const tags: string[] = [callOutcome];
+    // Tags applied via GHL API BEFORE any workflow webhook fires (Workflow B condition: Tags Includes appointment-booked)
+    const tags: string[] = [callOutcome === 'call-connected' ? 'call-connected' : callOutcome];
+    if (appointmentBooked && !tags.includes('appointment-booked')) tags.push('appointment-booked');
+    if (callOutcome === 'voicemail-left' && !tags.includes('voicemail-left')) tags.push('voicemail-left');
     if (cabinetsInstalledBool === true) tags.push('cabinets-installed');
     if (selectedStoneInterest) tags.push('selected-stone-interest');
 
@@ -84,9 +87,26 @@ export async function POST(req: NextRequest) {
       transcript ? `Transcript (truncated): ${String(transcript).slice(0, 3500)}` : null,
     ].filter(Boolean).join('\n');
 
+    // GHL Contacts API tag/note update (only when a GHL API key and contact id are available)
+    // Applied BEFORE Workflow B webhook so its "Tags Includes appointment-booked" condition passes.
+    let ghlContactsSync: any = { skipped: true, reason: 'GHL_API_KEY not set or contactId missing' };
+    if (process.env.GHL_API_KEY && contactId) {
+      try {
+        const tagsOk = await addGhlTags(contactId, tags);
+        try { await addGhlContactNote(contactId, note); } catch (e) { console.error('GHL note failed', e); }
+        ghlContactsSync = { ok: !!tagsOk, contactId, tags };
+        if (!tagsOk) console.error('GHL add tags did not confirm success for contact', contactId);
+      } catch (e) {
+        console.error('GHL contacts sync failed', e);
+        ghlContactsSync = { ok: false, error: String(e) };
+      }
+    } else if (!process.env.GHL_API_KEY) {
+      console.warn('GHL_API_KEY not set — appointment-booked tag will NOT be applied via API; Workflow B condition will not pass.');
+    }
+
     // Workflow B: "SOI - 02 Retell Post-Call Sync" — dedicated GHL webhook URL
-    const retellWebhookUrl = process.env.GHL_RETELL_WEBHOOK_URL;
-    let retellWorkflowSync: any = { skipped: true, reason: 'GHL_RETELL_WEBHOOK_URL not set' };
+    const retellWebhookUrl = process.env.GHL_RETELL_WEBHOOK_URL || process.env.GHL_WEBHOOK_URL_B;
+    let retellWorkflowSync: any = { skipped: true, reason: 'GHL_RETELL_WEBHOOK_URL / GHL_WEBHOOK_URL_B not set' };
     if (retellWebhookUrl) {
       try {
         const res = await fetch(retellWebhookUrl, {
@@ -107,12 +127,6 @@ export async function POST(req: NextRequest) {
         console.error('GHL_RETELL_WEBHOOK_URL post failed', e);
         retellWorkflowSync = { ok: false, error: e?.message || 'Request failed' };
       }
-    }
-
-    // GHL Contacts API tag/note update (only when a GHL API key and contact id are available)
-    if (process.env.GHL_API_KEY && contactId) {
-      try { await addGhlTags(contactId, tags); } catch (e) { console.error('GHL tag update failed', e); }
-      try { await addGhlContactNote(contactId, note); } catch (e) { console.error('GHL note failed', e); }
     }
 
     // Trigger appropriate GHL SMS confirmation/workflow webhook (default workflow webhook)
