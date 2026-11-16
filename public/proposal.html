@@ -1,39 +1,535 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Merit Media & Marketing — Interactive Proposal | Stones of Italy, Inc.</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Transformation & AI Growth Proposal | Stones of Italy, Inc.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0D0D0F',
+            charcoal: '#16161A',
+            slatecard: '#1E1E24',
+            alabaster: '#F8F7F4',
+            gold: {
+              DEFAULT: '#C5A059',
+              light: '#DFC180',
+              dark: '#9E7B38',
+            },
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
   <style>
-    :root { --bg:#121212; --gold:#C5A059; --text:#F8F7F4; --muted:#b8b2a7; }
-    *{box-sizing:border-box} body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.6}
-    .wrap{max-width:900px;margin:0 auto;padding:48px 24px} .badge{color:var(--gold);letter-spacing:.18em;text-transform:uppercase;font-size:12px}
-    h1{font-size:42px;margin:8px 0 12px;color:#fff} h2{color:var(--gold);font-size:22px;margin-top:32px}
-    .card{border:1px solid rgba(197,160,89,.35);padding:24px;margin:20px 0;background:#171717}
-    a{color:var(--gold)} .cta{display:inline-block;margin-top:16px;padding:12px 18px;border:1px solid var(--gold);color:var(--bg);background:var(--gold);text-decoration:none;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
-    ul{padding-left:20px} li{margin:6px 0;color:var(--muted)}
+    body {
+      background-color: #0D0D0F;
+      color: #F8F7F4;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .gold-glow {
+      box-shadow: 0 0 40px -10px rgba(197, 160, 89, 0.28);
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #2A2A32;
+      height: 6px;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #C5A059;
+      cursor: pointer;
+      border: 2px solid #0D0D0F;
+      box-shadow: 0 0 10px rgba(197, 160, 89, 0.6);
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #111111 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-card {
+        background: #ffffff !important;
+        border: 1px solid #cccccc !important;
+        color: #111111 !important;
+        box-shadow: none !important;
+      }
+    }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <div class="badge">Merit Media &amp; Marketing</div>
-    <h1>Interactive Proposal for Stones of Italy, Inc.</h1>
-    <p style="color:var(--muted)">AI showroom, instant visualization &amp; estimates, Retell AI speed-to-lead, and GoHighLevel CRM/nurture automation for Vero Beach &amp; the Treasure Coast.</p>
-    <div class="card">
-      <h2>What’s Included</h2>
-      <ul>
-        <li>Premium Next.js AI showroom experience (logo, visualizer, precision estimator, chat concierge)</li>
-        <li>Instant lead capture to GoHighLevel with tagging, workflows, and 7-day drip enrollment</li>
-        <li>Retell AI outbound/inbound voice agents for 20-second speed-to-lead and appointment booking</li>
-        <li>Itemized estimate PDF delivery workflow hooks and durable dispatch safeguards</li>
-      </ul>
-      <a class="cta" href="/">View Live AI Demo</a>
+<body class="antialiased selection:bg-gold selection:text-obsidian">
+
+  <!-- TOP NAVIGATION / AGENCY BAR -->
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-obsidian/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3.5">
+        <img
+          src="/logos/merit-media.svg"
+          alt="Merit Media & Marketing Logo"
+          class="h-12 w-12 rounded-full border border-gold/50 bg-obsidian object-cover shadow-md"
+        />
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-gold">Merit Media &amp; Marketing</p>
+          <p class="text-xs text-neutral-400">meritmediafl.com • (772) 290-1756</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 no-print">
+        <a href="/" class="hidden rounded-lg border border-white/15 bg-charcoal px-3.5 py-2 text-xs font-semibold text-alabaster transition hover:border-gold hover:text-gold sm:inline-flex">
+          View Live Website Demo
+        </a>
+        <button onclick="window.print()" class="rounded-lg border border-gold/40 bg-gold/10 px-3.5 py-2 text-xs font-semibold text-gold transition hover:bg-gold hover:text-obsidian">
+          Save / Print PDF
+        </button>
+      </div>
     </div>
-    <div class="card">
-      <h2>Next Steps</h2>
-      <p style="color:var(--muted)">Connect production API keys (Visualizer, OpenAI, Retell, GHL, Supabase) in Vercel, configure GHL calendar/workflows/SMS templates, and enable the dispatch cron to activate all live automations.</p>
-      <p style="color:var(--muted)"><strong>Stones of Italy, Inc.</strong> • 4646 US-1, Vero Beach, FL 32967 • <a href="tel:7722997560">772-299-7560</a></p>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden border-b border-white/10 py-16 sm:py-24">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(197,160,89,0.12),transparent_55%)]"></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-gold">
+            Exclusive Growth &amp; AI Blueprint • Vero Beach, FL
+          </div>
+          <h1 class="font-serif text-4xl font-bold leading-tight text-alabaster sm:text-5xl lg:text-6xl">
+            Turning 25 Years of Craftsmanship Into Vero Beach’s <span class="italic text-gold">#1 Digital Showroom.</span>
+          </h1>
+          <p class="mt-6 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+            Prepared exclusively for <strong class="text-white">Stones of Italy, Inc.</strong> (4646 US-1, Vero Beach, FL). A complete digital transformation combining a luxury AI-powered countertop showroom, 24/7 AI voice &amp; chat sales agents, automated follow-up, and cinema-grade 4K &amp; drone production built to capture high-ticket Treasure Coast homeowners.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-4 no-print">
+            <a href="/" class="inline-flex items-center gap-2 rounded-xl bg-gold px-6 py-3.5 text-sm font-bold text-obsidian shadow-lg transition hover:bg-gold-light">
+              Launch Live Stones of Italy AI Demo
+              <span>→</span>
+            </a>
+            <a href="#packages" class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-charcoal px-6 py-3.5 text-sm font-semibold text-alabaster transition hover:border-gold hover:text-gold">
+              Compare Growth Tiers
+            </a>
+          </div>
+        </div>
+
+        <!-- CLIENT CREST CARD -->
+        <div class="lg:col-span-4">
+          <div class="print-card rounded-2xl border border-gold/30 bg-charcoal/90 p-7 text-center gold-glow">
+            <div class="mx-auto flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-gold/60 bg-obsidian p-1.5 shadow-xl">
+              <img
+                src="/logos/stones-of-italy.svg"
+                alt="Stones of Italy, Inc. Logo"
+                class="h-full w-full rounded-full object-contain"
+              />
+            </div>
+
+            <h2 class="mt-4 font-serif text-2xl font-bold text-white">Stones of Italy, Inc.</h2>
+            <p class="mt-1 text-xs text-neutral-400">4646 US-1, Vero Beach, FL 32967 • (772) 299-7560</p>
+            <div class="mt-4 grid grid-cols-2 gap-2 border-t border-white/10 pt-4 text-left text-xs">
+              <div>
+                <span class="text-neutral-400">Google Reputation</span>
+                <p class="font-bold text-gold">4.7 ★ (127+ Reviews)</p>
+              </div>
+              <div>
+                <span class="text-neutral-400">Prepared By</span>
+                <p class="font-semibold text-white">Daniel Brown, Founder</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIGITAL GAP AUDIT -->
+  <section class="border-b border-white/10 py-14">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-10 max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-gold">Current Market Audit</p>
+        <h2 class="mt-2 font-serif text-3xl font-bold text-white sm:text-4xl">Why Vero Beach Homeowners Are Missing You Online</h2>
+        <p class="mt-3 text-sm leading-relaxed text-neutral-300 sm:text-base">
+          Customers rave about Mike Sr., Diego, Angelo, and Michael for precision templating and unbeatable craftsmanship—yet competitors with inferior fabrication are capturing online buyers first due to three solvable gaps:
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="print-card rounded-2xl border border-white/10 bg-charcoal p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10 text-lg font-bold text-red-400">01</div>
+          <h3 class="text-lg font-bold text-white">No Modern Standalone Website</h3>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-400">
+            Homeowners researching Quartzite, Marble, and Quartz expect to browse slabs, visualize countertops in their own kitchen, and request instant quotes online before driving down US-1.
+          </p>
+        </div>
+
+        <div class="print-card rounded-2xl border border-white/10 bg-charcoal p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-lg font-bold text-amber-400">02</div>
+          <h3 class="text-lg font-bold text-white">Missed Calls While in the Yard</h3>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-400">
+            When your team is running saws, templating, or installing on-site, unanswered calls and slow quote follow-ups send ready-to-buy kitchen projects straight to the next shop on Google.
+          </p>
+        </div>
+
+        <div class="print-card rounded-2xl border border-white/10 bg-charcoal p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gold/15 text-lg font-bold text-gold">03</div>
+          <h3 class="text-lg font-bold text-white">Fragmented Directory Listings</h3>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-400">
+            Outdated listings across YellowPages, BBB, and Manta still display your old 2200 Old Dixie Hwy address without a website link—hurting local Google Maps rankings across Indian River County.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE ROI CALCULATOR -->
+  <section id="roi" class="border-b border-white/10 bg-charcoal/40 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-10 text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-gold">Interactive Revenue Projection</p>
+        <h2 class="mt-2 font-serif text-3xl font-bold text-white sm:text-4xl">Calculate Your Return on Investment</h2>
+        <p class="mx-auto mt-2 max-w-2xl text-sm text-neutral-300">
+          Adjust the sliders below to see how capturing just a few extra Vero Beach kitchen, bath, or outdoor summer kitchen projects per month pays for your entire AI &amp; media ecosystem multiple times over.
+        </p>
+      </div>
+
+      <div class="print-card mx-auto grid max-w-5xl gap-8 rounded-2xl border border-gold/30 bg-charcoal p-6 sm:p-10 lg:grid-cols-12 gold-glow">
+        <!-- Sliders -->
+        <div class="space-y-6 lg:col-span-7">
+          <div>
+            <div class="mb-2 flex justify-between text-sm">
+              <span class="font-medium text-neutral-300">Average Stone Project Value</span>
+              <span id="avgTicketVal" class="font-bold text-gold">$5,200</span>
+            </div>
+            <input id="avgTicket" type="range" min="3500" max="12000" step="100" value="5200" class="w-full" />
+            <div class="mt-1 flex justify-between text-[11px] text-neutral-500">
+              <span>$3,500 (Vanity / Small Kitchen)</span>
+              <span>$12,000 (Estate / Waterfall)</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="mb-2 flex justify-between text-sm">
+              <span class="font-medium text-neutral-300">Extra Closed Projects / Month (via AI + Web + Ads)</span>
+              <span id="extraJobsVal" class="font-bold text-gold">3 Jobs / mo</span>
+            </div>
+            <input id="extraJobs" type="range" min="1" max="10" step="1" value="3" class="w-full" />
+            <div class="mt-1 flex justify-between text-[11px] text-neutral-500">
+              <span>1 Job / mo (Ultra Conservative)</span>
+              <span>10 Jobs / mo (Full Scale)</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="mb-2 flex justify-between text-sm">
+              <span class="font-medium text-neutral-300">Estimated Gross Profit Margin (%)</span>
+              <span id="marginVal" class="font-bold text-gold">50%</span>
+            </div>
+            <input id="margin" type="range" min="35" max="65" step="5" value="50" class="w-full" />
+            <div class="mt-1 flex justify-between text-[11px] text-neutral-500">
+              <span>35%</span>
+              <span>65%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Results -->
+        <div class="flex flex-col justify-between rounded-xl border border-white/10 bg-obsidian p-6 lg:col-span-5">
+          <div class="space-y-4">
+            <div class="border-b border-white/10 pb-3">
+              <p class="text-xs uppercase tracking-wider text-neutral-400">Added Monthly Gross Revenue</p>
+              <p id="monthlyRev" class="mt-1 font-serif text-3xl font-bold text-white">$15,600</p>
+            </div>
+            <div class="border-b border-white/10 pb-3">
+              <p class="text-xs uppercase tracking-wider text-neutral-400">Added Annual Gross Revenue</p>
+              <p id="annualRev" class="mt-1 font-serif text-2xl font-bold text-alabaster">$187,200</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider text-neutral-400">Added Monthly Gross Profit</p>
+              <p id="monthlyProfit" class="mt-1 font-serif text-2xl font-bold text-emerald-400">$7,800 / mo</p>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-lg border border-gold/40 bg-gold/10 p-3.5 text-center">
+            <p class="text-xs uppercase tracking-widest text-gold">Projected Tier 2 ROI Multiple ($795/mo)</p>
+            <p id="roiMultiple" class="mt-0.5 text-2xl font-extrabold text-white">9.8x Return</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3-TIER GROWTH PACKAGES -->
+  <section id="packages" class="border-b border-white/10 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 text-center">
+        <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-400">
+          Vero Beach Founding Partner Discount Applied
+        </div>
+        <h2 class="mt-1 font-serif text-3xl font-bold text-white sm:text-4xl">Choose Your Growth &amp; AI Automation Tier</h2>
+        <p class="mx-auto mt-3 max-w-2xl text-sm text-neutral-300">
+          Every package includes full ownership of your custom Stones of Italy website, branding assets, and Treasure Coast digital infrastructure—with locked-in local partner pricing.
+        </p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-3">
+
+        <!-- TIER 1 -->
+        <div class="print-card flex flex-col justify-between rounded-2xl border border-white/15 bg-charcoal p-7">
+          <div>
+            <div class="flex items-center justify-between">
+              <p class="text-xs font-bold uppercase tracking-widest text-neutral-400">Tier 01</p>
+              <span class="rounded-md bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">Save $2,300 Setup + $202/mo</span>
+            </div>
+            <h3 class="mt-2 font-serif text-2xl font-bold text-white">Digital Showroom &amp; AI Foundation</h3>
+            <p class="mt-2 text-xs text-neutral-400">Establish a luxury online showroom and never miss another inbound shop call.</p>
+
+            <div class="mt-6 border-y border-white/10 py-4">
+              <div class="flex items-baseline gap-2.5">
+                <span class="font-serif text-4xl font-bold text-white">$595</span>
+                <span class="text-sm font-medium text-neutral-500 line-through">$797</span>
+                <span class="text-xs text-neutral-400">/ month</span>
+              </div>
+              <p class="mt-1.5 text-xs font-semibold text-gold">
+                + <span class="text-neutral-500 line-through mr-1">$3,500</span> $1,200 One-Time Build &amp; AI Setup
+              </p>
+            </div>
+
+            <ul class="mt-6 space-y-3 text-sm text-neutral-300">
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> Custom Luxury Website featuring your Stones of Italy Brand Logo</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>AI Countertop Photo Visualizer</strong> (Top 10 signature slabs)</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Precision Instant Quote Calculator</strong> with PDF estimate delivery</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>24/7 AI Sales &amp; Support Chat Concierge</strong> on website</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>24/7 Inbound AI Receptionist</strong> (answers missed/after-hours calls &amp; texts lead summaries)</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> Instant Minute-0 SMS &amp; Email lead confirmation</li>
+            </ul>
+          </div>
+
+          <button onclick="openSelectModal('Tier 1: Digital Showroom & AI Foundation ($1,200 Setup + $595/mo)')" class="no-print mt-8 w-full rounded-xl border border-white/20 bg-obsidian py-3.5 text-sm font-bold text-white transition hover:border-gold hover:text-gold">
+            Select Tier 1
+          </button>
+        </div>
+
+        <!-- TIER 2 (MOST POPULAR) -->
+        <div class="print-card relative flex flex-col justify-between rounded-2xl border-2 border-gold bg-charcoal p-7 gold-glow">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-4 py-1 text-[11px] font-extrabold uppercase tracking-widest text-obsidian">
+            Most Popular • Complete AI &amp; Lead Engine
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <p class="text-xs font-bold uppercase tracking-widest text-gold">Tier 02</p>
+              <span class="rounded-md bg-gold/20 px-2.5 py-0.5 text-[11px] font-bold text-gold">Save $3,550 Setup + $702/mo</span>
+            </div>
+            <h3 class="mt-2 font-serif text-2xl font-bold text-white">AI Sales Machine &amp; Local Authority</h3>
+            <p class="mt-2 text-xs text-neutral-300">Instant 30-second AI outbound calling, 7-day automated follow-up, remnant portal, 5-star review engine &amp; social media.</p>
+
+            <div class="mt-6 border-y border-white/10 py-4">
+              <div class="flex items-baseline gap-2.5">
+                <span class="font-serif text-4xl font-bold text-gold">$795</span>
+                <span class="text-base font-medium text-neutral-500 line-through">$1,497</span>
+                <span class="text-xs text-neutral-300">/ month</span>
+              </div>
+              <p class="mt-1.5 text-xs font-semibold text-alabaster">
+                + <span class="text-neutral-500 line-through mr-1">$5,500</span> $1,950 One-Time Full Build &amp; AI Setup
+              </p>
+            </div>
+
+            <ul class="mt-6 space-y-3 text-sm text-neutral-200">
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Everything in Tier 1</strong>, plus:</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Instant Outbound AI Speed-to-Lead Caller:</strong> Calls web leads within 30 seconds, qualifies project &amp; books in-person estimates on your calendar</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Automated 7-Day Drip + Long-Term SMS &amp; Email Nurture</strong></li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>AI Remnant &amp; Vanity Matchmaker Portal:</strong> Turns leftover yard half-slabs into instant high-margin vanity &amp; bar sales</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Automated 5-Star Google Review &amp; Photo Engine:</strong> Auto-texts clients post-install to grow your 4.7★ rating &amp; project gallery</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Social Media Management:</strong> 12 custom posts/month (IG &amp; FB slab spotlights, finished kitchens &amp; Reels)</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Local SEO Pages + Bilingual (EN/ES) AI Support:</strong> Dedicated pages for Vero Beach, Sebastian, Hutchinson Island &amp; Fort Pierce</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>FREE Bonus:</strong> Google Maps &amp; Directory Cleanup (merges old Old Dixie Hwy listings into 4646 US-1)</li>
+            </ul>
+          </div>
+
+          <button onclick="openSelectModal('Tier 2: AI Sales Machine & Local Authority ($1,950 Setup + $795/mo)')" class="no-print mt-8 w-full rounded-xl bg-gold py-3.5 text-sm font-extrabold text-obsidian shadow-lg transition hover:bg-gold-light">
+            Select Tier 2 (Recommended)
+          </button>
+        </div>
+
+        <!-- TIER 3 -->
+        <div class="print-card flex flex-col justify-between rounded-2xl border border-white/15 bg-charcoal p-7">
+          <div>
+            <div class="flex items-center justify-between">
+              <p class="text-xs font-bold uppercase tracking-widest text-neutral-400">Tier 03</p>
+              <span class="rounded-md bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-bold text-emerald-400">Save $4,005 Setup + $1,502/mo</span>
+            </div>
+            <h3 class="mt-2 font-serif text-2xl font-bold text-white">Treasure Coast Market Domination</h3>
+            <p class="mt-2 text-xs text-neutral-400">4K cinema &amp; drone commercial production, full Meta &amp; Google ad management, builder portal &amp; live call transfers.</p>
+
+            <div class="mt-6 border-y border-white/10 py-4">
+              <div class="flex items-baseline gap-2.5">
+                <span class="font-serif text-4xl font-bold text-white">$995</span>
+                <span class="text-base font-medium text-neutral-500 line-through">$2,497</span>
+                <span class="text-xs text-neutral-400">/ month (+ ad spend)</span>
+              </div>
+              <p class="mt-1.5 text-xs font-semibold text-gold">
+                + <span class="text-neutral-500 line-through mr-1">$7,500</span> $3,495 One-Time 4K Production &amp; Setup
+              </p>
+            </div>
+
+            <ul class="mt-6 space-y-3 text-sm text-neutral-300">
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Everything in Tier 2</strong>, plus:</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>4K Cinema &amp; FAA Part 107 Drone Commercial Production:</strong> On-site shoot at 4646 US-1 (60-sec flagship commercial + 8 social Reels + 3 completed Vero Beach home showcase videos)</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Full Meta &amp; Google Paid Ad Management:</strong> AI Visualizer retargeting ads + Google High-Intent "Countertops Vero Beach" search campaigns</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Expanded Social Media &amp; GBP Management:</strong> 20 posts/month + weekly Google Business Profile updates</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Builder, Designer &amp; Contractor VIP Portal</strong> for repeat trade accounts &amp; bulk slab reservations</li>
+              <li class="flex items-start gap-2.5"><span class="text-gold">✓</span> <strong>Warm Live Call Transfer:</strong> AI qualifies high-ticket buyers and patches them live to Mike or Diego</li>
+            </ul>
+          </div>
+
+          <button onclick="openSelectModal('Tier 3: Treasure Coast Market Domination ($3,495 Setup + $995/mo)')" class="no-print mt-8 w-full rounded-xl border border-white/20 bg-obsidian py-3.5 text-sm font-bold text-white transition hover:border-gold hover:text-gold">
+            Select Tier 3
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 14-DAY LAUNCH ROADMAP -->
+  <section class="py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-10 text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-gold">Fast Turnaround</p>
+        <h2 class="mt-2 font-serif text-3xl font-bold text-white sm:text-4xl">14-Day Launch Roadmap</h2>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="print-card rounded-xl border border-white/10 bg-charcoal p-5">
+          <span class="text-xs font-bold text-gold">DAYS 1 – 3</span>
+          <h3 class="mt-1 font-bold text-white">Foundation &amp; Maps Fix</h3>
+          <p class="mt-2 text-xs leading-relaxed text-neutral-400">Domain connection, Google Business Profile cleanup, and custom AI voice &amp; chat training on your exact slab inventory.</p>
+        </div>
+        <div class="print-card rounded-xl border border-white/10 bg-charcoal p-5">
+          <span class="text-xs font-bold text-gold">DAYS 4 – 7</span>
+          <h3 class="mt-1 font-bold text-white">Showroom &amp; Media Build</h3>
+          <p class="mt-2 text-xs leading-relaxed text-neutral-400">Luxury website assembly, Top 10 slab visualizer setup, remnant portal configuration, and 4K/drone filming (Tier 3).</p>
+        </div>
+        <div class="print-card rounded-xl border border-white/10 bg-charcoal p-5">
+          <span class="text-xs font-bold text-gold">DAYS 8 – 11</span>
+          <h3 class="mt-1 font-bold text-white">AI Tools &amp; CRM Testing</h3>
+          <p class="mt-2 text-xs leading-relaxed text-neutral-400">Live testing of the AI Countertop Visualizer, Instant Quote PDF engine, 30-second outbound AI caller, and 7-day SMS drip.</p>
+        </div>
+        <div class="print-card rounded-xl border border-white/10 bg-charcoal p-5">
+          <span class="text-xs font-bold text-gold">DAYS 12 – 14</span>
+          <h3 class="mt-1 font-bold text-white">Go-Live &amp; Lead Launch</h3>
+          <p class="mt-2 text-xs leading-relaxed text-neutral-400">Full public launch, social media rollout, review engine activation, and live calendar booking straight to your team.</p>
+        </div>
+      </div>
+
+      <!-- FOOTER CTA -->
+      <div class="mt-14 rounded-2xl border border-gold/30 bg-gradient-to-r from-charcoal via-slatecard to-charcoal p-8 text-center sm:p-10">
+        <img
+          src="/logos/merit-media.svg"
+          alt="Merit Media & Marketing"
+          class="mx-auto mb-4 h-16 w-16 rounded-full border border-gold/50 object-cover shadow-lg"
+        />
+        <h3 class="font-serif text-2xl font-bold text-white sm:text-3xl">Ready to Put Stones of Italy at the Top of Vero Beach?</h3>
+        <p class="mx-auto mt-2 max-w-xl text-sm text-neutral-300">
+          Questions or custom adjustments? Call or text Daniel Brown directly at <strong class="text-gold">(772) 290-1756</strong> or visit <strong class="text-white">meritmediafl.com</strong>.
+        </p>
+        <div class="mt-6 flex flex-wrap justify-center gap-4 no-print">
+          <a href="tel:7722901756" class="rounded-xl bg-gold px-6 py-3 text-sm font-bold text-obsidian transition hover:bg-gold-light">
+            Call Daniel: (772) 290-1756
+          </a>
+          <a href="sms:7722901756?body=Hey%20Daniel%2C%20we%20reviewed%20the%20Stones%20of%20Italy%20proposal%20and%20want%20to%20get%20started!" class="rounded-xl border border-white/20 bg-obsidian px-6 py-3 text-sm font-semibold text-white transition hover:border-gold hover:text-gold">
+            Text to Lock In Your Package
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGE APPROVAL MODAL -->
+  <div id="selectModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 p-4 backdrop-blur-sm no-print">
+    <div class="w-full max-w-md rounded-2xl border border-gold/40 bg-charcoal p-6 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-widest text-gold">Package Selected</span>
+        <button onclick="closeSelectModal()" class="text-neutral-400 hover:text-white">✕</button>
+      </div>
+      <h3 id="selectedTierTitle" class="mt-2 font-serif text-2xl font-bold text-white">Tier 2</h3>
+      <p class="mt-2 text-xs leading-relaxed text-neutral-300">
+        Tap below to send an instant confirmation text or email to Daniel Brown at Merit Media &amp; Marketing to kick off your 14-day launch.
+      </p>
+      <div class="mt-6 space-y-3">
+        <a id="smsApproveLink" href="#" class="block w-full rounded-xl bg-gold py-3 text-center text-sm font-extrabold text-obsidian transition hover:bg-gold-light">
+          Confirm via Instant SMS to (772) 290-1756
+        </a>
+        <a id="emailApproveLink" href="#" class="block w-full rounded-xl border border-white/20 bg-obsidian py-3 text-center text-sm font-semibold text-white transition hover:border-gold hover:text-gold">
+          Confirm via Email
+        </a>
+      </div>
     </div>
   </div>
+
+  <script>
+    const avgTicketInput = document.getElementById('avgTicket');
+    const extraJobsInput = document.getElementById('extraJobs');
+    const marginInput = document.getElementById('margin');
+
+    function updateROI() {
+      const ticket = Number(avgTicketInput.value);
+      const jobs = Number(extraJobsInput.value);
+      const margin = Number(marginInput.value) / 100;
+
+      const monthlyRev = ticket * jobs;
+      const annualRev = monthlyRev * 12;
+      const monthlyProfit = monthlyRev * margin;
+      const roiMultiple = (monthlyProfit / 795).toFixed(1);
+
+      document.getElementById('avgTicketVal').textContent = '$' + ticket.toLocaleString();
+      document.getElementById('extraJobsVal').textContent = jobs + (jobs === 1 ? ' Job / mo' : ' Jobs / mo');
+      document.getElementById('marginVal').textContent = Math.round(margin * 100) + '%';
+
+      document.getElementById('monthlyRev').textContent = '$' + monthlyRev.toLocaleString();
+      document.getElementById('annualRev').textContent = '$' + annualRev.toLocaleString();
+      document.getElementById('monthlyProfit').textContent = '$' + Math.round(monthlyProfit).toLocaleString() + ' / mo';
+      document.getElementById('roiMultiple').textContent = roiMultiple + 'x Return';
+    }
+
+    avgTicketInput.addEventListener('input', updateROI);
+    extraJobsInput.addEventListener('input', updateROI);
+    marginInput.addEventListener('input', updateROI);
+    updateROI();
+
+    function openSelectModal(tierName) {
+      document.getElementById('selectedTierTitle').textContent = tierName;
+      const msg = encodeURIComponent(`Hi Daniel, Stones of Italy would like to move forward with ${tierName}. Let's schedule our kickoff!`);
+      document.getElementById('smsApproveLink').href = `sms:7722901756?body=${msg}`;
+      document.getElementById('emailApproveLink').href = `mailto:daniel@meritmediafl.com?subject=${encodeURIComponent('Stones of Italy Proposal Approval')}&body=${msg}`;
+      const modal = document.getElementById('selectModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSelectModal() {
+      const modal = document.getElementById('selectModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  </script>
 </body>
 </html>

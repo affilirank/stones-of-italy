@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { TOP_10_STONES, SAMPLE_ROOMS } from '@/lib/stones';
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -21,9 +21,25 @@ export default function CountertopVisualizer() {
   const [note, setNote] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [sampleId, setSampleId] = useState(SAMPLE_ROOMS[0].id);
+  const [compareWidth, setCompareWidth] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
+  const compareRef = useRef<HTMLDivElement>(null);
 
   const selectedStone = useMemo(() => TOP_10_STONES.find(s => s.id === selectedStoneId)!, [selectedStoneId]);
+
+  useEffect(() => {
+    const el = compareRef.current;
+    if (!el) return;
+    const update = () => setCompareWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
 
   function onSampleChange(id: string) {
     setSampleId(id);
@@ -75,6 +91,8 @@ export default function CountertopVisualizer() {
     window.dispatchEvent(new CustomEvent('soi:select-stone', { detail: { stoneId: selectedStoneId } }));
     document.getElementById('estimator')?.scrollIntoView({ behavior: 'smooth' });
   }
+
+  const showAfter = afterUrl || beforeUrl;
 
   return (
     <div className="glass-panel-dark rounded-none overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-0 border border-gold/30">
@@ -134,24 +152,43 @@ export default function CountertopVisualizer() {
             Get Estimate for This Stone
           </button>
           {note && <div className="text-[11px] text-amber-200/90 bg-amber-900/20 border border-amber-500/20 p-2">{note}</div>}
+          {!afterUrl && <div className="text-[11px] text-alabaster/50">Tip: click “Render Selected Stone” to generate/apply a visualization (mock preview shown if no AI key is configured).</div>}
         </div>
       </div>
 
-      <div className="lg:col-span-7 relative min-h-[420px] lg:min-h-[580px] bg-black select-none overflow-hidden">
-        <div className="absolute inset-0 w-full h-full">
-          <img src={afterUrl || beforeUrl} className="w-full h-full object-cover" alt={`Visualization with ${selectedStone.name}`} />
-          <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20">
-            {selectedStone.name}
-          </span>
+      <div ref={compareRef} className="lg:col-span-7 relative min-h-[420px] lg:min-h-[580px] bg-black select-none overflow-hidden">
+        {/* After / result layer */}
+        <img src={showAfter} className="absolute inset-0 w-full h-full object-cover" alt={`Visualization with ${selectedStone.name}`} />
+        <span className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-md text-gold text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-gold/30 z-20 pointer-events-none">
+          {selectedStone.name}
+        </span>
+
+        {/* Before layer clipped */}
+        <div className="absolute inset-y-0 left-0 overflow-hidden z-10 border-r-2 border-gold shadow-2xl" style={{ width: `${slider}%` }}>
+          <img
+            src={beforeUrl}
+            alt="Before"
+            className="absolute top-0 left-0 h-full max-w-none object-cover"
+            style={{ width: compareWidth ? `${compareWidth}px` : '100vw' }}
+          />
+          <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/80 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20 pointer-events-none">Before</span>
         </div>
-        <div className="absolute inset-0 h-full overflow-hidden z-10 border-r-2 border-gold shadow-2xl" style={{ width: `${slider}%` }}>
-          <img src={beforeUrl} className="h-full object-cover max-w-none" style={{ width: `${10000 / Math.max(slider, 1)}%` }} alt="Before" />
-          <span className="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md text-alabaster/80 text-xs font-bold uppercase tracking-widest px-3 py-1.5 border border-alabaster/20">Before</span>
-        </div>
-        <div className="absolute top-0 bottom-0 z-30 transform -translate-x-1/2 flex items-center justify-center pointer-events-none" style={{ left: `${slider}%` }}>
+
+        {/* Handle */}
+        <div className="absolute top-0 bottom-0 z-30 -translate-x-1/2 flex items-center justify-center pointer-events-none" style={{ left: `${slider}%` }}>
           <div className="w-10 h-10 rounded-full bg-gold text-obsidian flex items-center justify-center shadow-2xl font-bold border-2 border-alabaster">↔</div>
+          <div className="absolute top-0 bottom-0 w-px bg-gold/0" />
         </div>
-        <input type="range" min={0} max={100} value={slider} onChange={e => setSlider(Number(e.target.value))} className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-40" aria-label="Before after slider" />
+
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={slider}
+          onChange={e => setSlider(Number(e.target.value))}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-40 m-0"
+          aria-label="Before and after comparison slider"
+        />
       </div>
     </div>
   );

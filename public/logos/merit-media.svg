@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Merit Media &amp; Marketing">
+  <defs>
+    <linearGradient id="mg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DFC180"/>
+      <stop offset="50%" stop-color="#C5A059"/>
+      <stop offset="100%" stop-color="#9E7B38"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="#0D0D0F" stroke="url(#mg)" stroke-width="3"/>
+  <circle cx="100" cy="100" r="84" fill="none" stroke="#C5A059" stroke-width="1" opacity="0.7"/>
+  <text x="100" y="92" text-anchor="middle" font-family="Georgia, serif" font-size="54" font-weight="700" fill="#F8F7F4" letter-spacing="2">MM</text>
+  <text x="100" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#C5A059" letter-spacing="3">MERIT MEDIA</text>
+  <text x="100" y="134" text-anchor="middle" font-family="Arial, sans-serif" font-size="8.5" font-weight="600" fill="#F8F7F4" letter-spacing="2">&amp; MARKETING</text>
+</svg>
