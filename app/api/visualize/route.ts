@@ -10,23 +10,41 @@ function buildPrompt(stoneName: string, stone: any) {
 async function callGemini(base64: string, mimeType: string, prompt: string) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not configured');
-  const model = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
-      generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
-    })
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data?.error?.message || 'Gemini visualization failed');
-  const parts = data?.candidates?.[0]?.content?.parts || [];
-  const imgPart = parts.find((p: any) => p.inlineData || p.inline_data);
-  const inline = imgPart?.inlineData || imgPart?.inline_data;
-  if (!inline?.data) throw new Error('No image returned from Gemini');
-  return `data:${inline.mimeType || inline.mime_type || 'image/png'};base64,${inline.data}`;
+
+  const preferred = process.env.GEMINI_IMAGE_MODEL;
+  const candidates = [
+    preferred,
+    'gemini-3.1-flash-image-preview',
+    'gemini-2.5-flash-image',
+    'gemini-3.1-flash-image',
+    'gemini-3-pro-image-preview',
+  ].filter((m, i, arr): m is string => !!m && arr.indexOf(m) === i);
+
+  let lastError: any = null;
+  for (const model of candidates) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data: base64 } }] }],
+          generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error?.message || `Gemini visualization failed (${model})`);
+      const parts = data?.candidates?.[0]?.content?.parts || [];
+      const imgPart = parts.find((p: any) => p.inlineData || p.inline_data);
+      const inline = imgPart?.inlineData || imgPart?.inline_data;
+      if (!inline?.data) throw new Error(`No image returned from Gemini (${model})`);
+      return `data:${inline.mimeType || inline.mime_type || 'image/png'};base64,${inline.data}`;
+    } catch (e: any) {
+      lastError = e;
+      // try next model on capability/input/availability errors
+    }
+  }
+  throw lastError || new Error('Gemini visualization failed');
 }
 
 async function callReplicate(imageDataUrl: string, prompt: string) {
