@@ -147,15 +147,22 @@ export default function AiChatConcierge() {
   return (
     <div className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50">
       <button onClick={() => setOpen(o => !o)} className="relative group bg-obsidian border-2 border-gold text-gold p-4 shadow-2xl flex items-center gap-3 hover:bg-gold hover:text-obsidian transition-all duration-300 rounded-none">
-        <span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-gold"></span></span>
-        <i className="bi bi-stars text-xl"></i>
+        <div className="relative">
+          <img src="/sofia-avatar.jpg" alt="Sofia" className="w-10 h-10 rounded-full object-cover border border-gold/50" />
+          <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-gold"></span>
+          </span>
+        </div>
         <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">AI Stone Specialist • Live</span>
       </button>
       {open && (
         <div className="absolute bottom-16 right-0 w-[22rem] sm:w-[26rem] glass-panel-dark border border-gold/40 shadow-2xl mb-2 flex flex-col overflow-hidden">
           <div className="flex justify-between items-center px-4 py-3 border-b border-gold/20 bg-obsidian/70">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full border border-gold/50 bg-gold/10 flex items-center justify-center text-gold"><i className="bi bi-gem"></i></div>
+              <div className="w-9 h-9 rounded-full border border-gold/50 overflow-hidden flex items-center justify-center">
+                <img src="/sofia-avatar.jpg" alt="Sofia" className="w-full h-full object-cover" />
+              </div>
               <div>
                 <div className="font-serif font-bold text-sm text-alabaster leading-tight">Sofia • AI Stone Specialist</div>
                 <div className="text-[10px] text-emerald-400 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>Online • Stones of Italy, Vero Beach</div>
@@ -167,7 +174,7 @@ export default function AiChatConcierge() {
           <div className="px-4 py-3 space-y-3 text-[13px] max-h-80 overflow-y-auto custom-scrollbar bg-gradient-to-b from-slate/20 to-transparent">
             {messages.map((m, i) => (
               <div key={i} className={m.role === 'assistant' ? 'flex gap-2' : 'flex gap-2 justify-end'}>
-                {m.role === 'assistant' && <div className="w-6 h-6 rounded-full bg-gold/20 text-gold text-[10px] flex items-center justify-center border border-gold/30 mt-0.5 flex-shrink-0">AI</div>}
+                {m.role === 'assistant' && <div className="w-6 h-6 rounded-full border border-gold/30 mt-0.5 flex-shrink-0 overflow-hidden"><img src="/sofia-avatar.jpg" alt="Sofia" className="w-full h-full object-cover" /></div>}
                 <div className={m.role === 'assistant'
                   ? 'bg-slate/60 p-3 text-alabaster/95 border border-gold/20 rounded-sm max-w-[88%] whitespace-pre-wrap leading-relaxed'
                   : 'bg-gold/15 p-3 text-alabaster border border-gold/30 rounded-sm max-w-[85%] whitespace-pre-wrap leading-relaxed'}>
@@ -177,7 +184,7 @@ export default function AiChatConcierge() {
             ))}
             {loading && (
               <div className="flex gap-2">
-                <div className="w-6 h-6 rounded-full bg-gold/20 text-gold text-[10px] flex items-center justify-center border border-gold/30 mt-0.5">AI</div>
+                <div className="w-6 h-6 rounded-full border border-gold/30 mt-0.5 overflow-hidden"><img src="/sofia-avatar.jpg" alt="Sofia" className="w-full h-full object-cover" /></div>
                 <div className="bg-slate/60 px-3 py-2 text-alabaster/70 border border-gold/20 rounded-sm text-xs">Sofia is typing…</div>
               </div>
             )}
