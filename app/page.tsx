@@ -63,17 +63,6 @@ export default function Home() {
 
       <VisualizerTeaser />
 
-      <section id="visualizer" className="py-24 bg-obsidian relative border-b border-gold/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Personalized AI Visualization</span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-alabaster mb-4">Create Your Custom Stone Visualization</h2>
-            <p className="text-alabaster/70 text-base">Choose your photo and signature stone, enter a few details, and we’ll generate your fresh AI before/after visualization below and send your selected stone details to you.</p>
-          </div>
-          <CountertopVisualizer />
-        </div>
-      </section>
-
       <section id="gallery" className="py-24 bg-alabaster text-obsidian border-b border-gold/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
@@ -112,6 +101,17 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="visualizer" className="py-24 bg-obsidian relative border-b border-gold/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2 block">Personalized AI Visualization</span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-alabaster mb-4">Create Your Custom Stone Visualization</h2>
+            <p className="text-alabaster/70 text-base">Choose your photo and signature stone, enter a few details, and we’ll generate your fresh AI before/after visualization below and send your selected stone details to you.</p>
+          </div>
+          <CountertopVisualizer />
         </div>
       </section>
 
